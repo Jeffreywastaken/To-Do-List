@@ -27,7 +27,23 @@
       }
 
       var newTask = document.createElement("li");
-      newTask.textContent = taskInput.value;
+
+      // Create task content
+      var taskContent = document.createElement("span");
+      taskContent.textContent = taskInput.value;
+
+      // Create delete button
+      var deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.className = "ml-2 px-2 py-1 bg-red-500 text-white rounded-md cursor-pointer";
+      deleteButton.onclick = function () {
+        taskList.removeChild(newTask);
+      };
+
+      // Add content and delete button
+      newTask.appendChild(taskContent);
+      newTask.appendChild(deleteButton);
+
       taskList.appendChild(newTask);
 
       taskInput.value = "";
