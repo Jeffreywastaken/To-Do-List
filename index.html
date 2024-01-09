@@ -63,25 +63,52 @@
     cursor: pointer;
     outline: none;
 
-/* Transition for smooth effect */
-transition: background 0.3s ease-in-out;
-}
+    /* Transition for smooth effect */
+    transition: background 0.3s ease-in-out;
+  }
 
-/* Change background color when checkbox is checked */
-.round-checkbox:checked {
- background: linear-gradient(to right,hsl(192, 100%, 67%) , hsl(280, 87%, 65%));;
+  /* Change background color when checkbox is checked */
+  .round-checkbox:checked {
+    background: linear-gradient(to right,hsl(192, 100%, 67%) , hsl(280, 87%, 65%));;
   }
 
   .checkmark-image {
-  display: none;
-  width: 1.5em;
-  height: 1.5em;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+    display: none;
+    width: 1.5em;
+    height: 1.5em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
+  .task-filter {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .filter-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    font-size: 16px;
+  }
+
+  .filter-button:hover {
+    text-decoration: underline;
+  }
+
+  .clear-completed {
+    color: #6b7280;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .clear-completed:hover {
+    text-decoration: underline;
+  }
 </style>
 
 <body class="font-sans text-white">
@@ -92,6 +119,13 @@ transition: background 0.3s ease-in-out;
       <input type="text" id="taskInput" class="w-full p-4 border border-gray-300 rounded-md mb-4 task-input" placeholder="Enter your task">
       <button class="w-full p-4 bg-green-500 text-white rounded-md cursor-pointer mb-4" onclick="addTask()">Add Task</button>
       <ul id="taskList" class="list-none p-0"></ul>
+
+      <div class="task-filter">
+        <button class="filter-button" onclick="filterTasks('all')">All</button>
+        <button class="filter-button" onclick="filterTasks('active')">Active</button>
+        <button class="filter-button" onclick="filterTasks('completed')">Completed</button>
+        <button class="clear-completed" onclick="clearCompleted()">Clear Completed</button>
+      </div>
     </div>
   </div>
 
@@ -104,6 +138,7 @@ transition: background 0.3s ease-in-out;
         alert("Please enter a task!");
         return;
       }
+
 
       var newTask = document.createElement("li");
       newTask.className = "flex items-center justify-between px-4 py-2 mb-4 bg-gray border rounded shadow";
@@ -167,6 +202,43 @@ newTask.appendChild(deleteButton);
 
       // Clear input value
       taskInput.value = "";
+
+      filterTasks('all');
+    }
+    function filterTasks(filterType) {
+      var taskList = document.getElementById("taskList");
+      var tasks = taskList.getElementsByTagName("li");
+
+      for (var i = 0; i < tasks.length; i++) {
+        var task = tasks[i];
+        var checkbox = task.querySelector(".round-checkbox");
+
+        switch (filterType) {
+          case 'all':
+            task.style.display = "flex";
+            break;
+          case 'active':
+            task.style.display = checkbox.checked ? "none" : "flex";
+            break;
+          case 'completed':
+            task.style.display = checkbox.checked ? "flex" : "none";
+            break;
+        }
+      }
+    }
+
+    function clearCompleted() {
+      var taskList = document.getElementById("taskList");
+      var tasks = taskList.getElementsByTagName("li");
+
+      for (var i = tasks.length - 1; i >= 0; i--) {
+        var task = tasks[i];
+        var checkbox = task.querySelector(".round-checkbox");
+
+        if (checkbox.checked) {
+          taskList.removeChild(task);
+        }
+      }
     }
   </script>
 
