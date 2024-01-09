@@ -100,6 +100,10 @@
     text-decoration: underline;
   }
 
+  .active-filter {
+    color: #ffffff; 
+  }
+
   .clear-completed {
     color: #6b7280;
     font-size: 16px;
@@ -225,6 +229,13 @@ newTask.appendChild(deleteButton);
             break;
         }
       }
+
+      // Remove the active-filter class from all buttons
+      var filterButtons = document.querySelectorAll(".filter-button");
+      filterButtons.forEach(button => button.classList.remove("active-filter"));
+
+      // Add the active-filter class to the clicked button
+      event.target.classList.add("active-filter");
     }
 
     function clearCompleted() {
