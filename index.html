@@ -6,6 +6,9 @@
   <title>T O D O</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha384-Zg538z6vquBZJZSp4Zgo+D0sh4jP0S3x5/WBNOOe11B8S+ojY5Zbew9vFzXJn2e" crossorigin="anonymous">
+
+
 </head>
 <style>
   body {
@@ -113,14 +116,34 @@
   .clear-completed:hover {
     text-decoration: underline;
   }
+
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+
+  .fade-out {
+    opacity: 1;
+    animation: fadeOut 0.5s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
 </style>
 
 <body class="font-sans text-white">
   <div class="background-color">
     <div class="background-image"></div>
-    <div class="w-full max-w-md p-6 bg-gray-800 rounded-md shadow-lg relative z-10">
+    <div class="w-full max-w-md p-6 bg-gray-800 rounded-md shadow-lg relative z-10 animate__animated animate__fadeIn" >
       <h2 class="text-3xl font-bold mb-6">T O D O</h2>
-      <input type="text" id="taskInput" class="w-full p-4 border border-gray-300 rounded-md mb-4 task-input" placeholder="Enter your task">
+      <input type="text" id="taskInput" class="w-full p-4 border border-gray-300 rounded-md mb-4 task-input" placeholder="Enter your task" onkeydown="if(event.key === 'Enter') addTask()">
       <button class="w-full p-4 bg-green-500 text-white rounded-md cursor-pointer mb-4" onclick="addTask()">Add Task</button>
       <ul id="taskList" class="list-none p-0"></ul>
 
@@ -207,6 +230,14 @@ newTask.appendChild(deleteButton);
       // Clear input value
       taskInput.value = "";
 
+        // Add fade-in animation to the new task
+  newTask.classList.add("fade-in");
+
+// Set a timeout to remove the fade-in class after the animation completes
+setTimeout(() => {
+  newTask.classList.remove("fade-in");
+}, 500);
+
       filterTasks('all');
     }
     function filterTasks(filterType) {
@@ -247,6 +278,7 @@ newTask.appendChild(deleteButton);
         var checkbox = task.querySelector(".round-checkbox");
 
         if (checkbox.checked) {
+          task.classList.add("fade-out");
           taskList.removeChild(task);
         }
       }
